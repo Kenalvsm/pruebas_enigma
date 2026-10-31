@@ -1,0 +1,20 @@
+// Adaptar en app/build.gradle Groovy al importar el proyecto Android real.
+apply plugin: 'jacoco'
+jacoco { toolVersion = '0.8.14' }
+tasks.register('jacocoTestReport', JacocoReport) {
+    dependsOn 'testDebugUnitTest'
+    reports { xml.required = true; html.required = true }
+    sourceDirectories.setFrom(files('src/main/java', 'src/main/kotlin'))
+    classDirectories.setFrom(files(
+        fileTree("$buildDir/tmp/kotlin-classes/debug") { exclude '**/R.class', '**/R$*.class', '**/BuildConfig.*' },
+        fileTree("$buildDir/intermediates/javac/debug/compileDebugJavaWithJavac/classes") { exclude '**/R.class', '**/R$*.class', '**/BuildConfig.*' }
+    ))
+    executionData.setFrom(fileTree(buildDir) { include '**/testDebugUnitTest.exec', '**/testDebugUnitTest.ec' })
+    doFirst {
+        if (executionData.files.empty || classDirectories.files.empty) {
+            throw new GradleException('Faltan datos JaCoCo o clases; ajustar rutas a AGP real')
+        }
+    }
+}
+// En build.gradle raiz: tasks.register('jacocoTestReport') { dependsOn ':app:jacocoTestReport' }
+// Activar enableUnitTestCoverage en buildTypes.debug con el DSL de AGP utilizado.

@@ -1,0 +1,19 @@
+# Native .githooks are installed; optional pre-commit framework equivalent.
+default_install_hook_types: [pre-commit, pre-push]
+repos:
+  - repo: local
+    hooks:
+      - id: branch-tests-commit
+        name: Branch protection, lint and tests
+        entry: python scripts/quality.py pre-commit
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit]
+      - id: branch-tests-push
+        name: Branch tests and coverage
+        entry: python scripts/quality.py pre-push
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]

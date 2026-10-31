@@ -1,0 +1,2 @@
+# Una linea por assembly propio; nunca motor, paquetes ni tests
+Assembly-CSharp

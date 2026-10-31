@@ -1,0 +1,30 @@
+name: CI Python
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  python-quality:
+    name: Python - lint, tests y cobertura >=80%
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.14'
+          enable-cache: true
+          cache-dependency-glob: python/uv.lock
+      - name: Formato, lint, tests y cobertura Python
+        run: python scripts/quality.py ci
+      - name: Informes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-informes-${{ github.run_id }}
+          path: .artifacts/python/
+          if-no-files-found: warn

@@ -1,0 +1,9 @@
+// Incorporar al build.gradle real; no sustituye JavaFX, JUnit ni Gradle Wrapper.
+plugins { id 'jacoco' }
+jacoco { toolVersion = '0.8.14' } // soporte Java 25; fijar version en wrapper/proyecto
+java { toolchain { languageVersion = JavaLanguageVersion.of(25) } }
+test { useJUnitPlatform(); failOnNoDiscoveredTests = true }
+jacocoTestReport {
+    dependsOn test
+    reports { xml.required = true; html.required = true }
+}
