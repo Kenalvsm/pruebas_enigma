@@ -43,6 +43,16 @@ class Gates(unittest.TestCase):
     def test_ci_only_python(self):
         self.assertEqual(self.call("ci", "feature/game/unity"), "python")
 
+    def test_ci_without_git(self):
+        with patch.object(sys, "argv", ["quality", "ci"]), patch.object(quality.subprocess, "check_output", side_effect=AssertionError("CI must not call Git")), patch.object(quality, "suite") as suite:
+            quality.main()
+            suite.assert_called_once_with("python", "ci")
+
+    def test_explicit_local_platform_without_git(self):
+        with patch.object(sys, "argv", ["quality", "test", "--platform", "javafx"]), patch.object(quality.subprocess, "check_output", side_effect=AssertionError("Explicit platform needs no Git")), patch.object(quality, "suite") as suite:
+            quality.main()
+            suite.assert_called_once_with("javafx", "test")
+
     def test_bad_coverage(self):
         with tempfile.TemporaryDirectory() as temp:
             p = Path(temp) / "coverage.xml"

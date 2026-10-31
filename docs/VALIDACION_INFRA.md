@@ -16,3 +16,11 @@ plantillas JaCoCo; hace falta importar cada proyecto real.
 GitHub y act no ejecutados: no hay remoto conectado ni validacion Docker.
 No se han creado commits, PR, main/develop con contenido ni evidencias de
 participacion ficticias. HEAD inicial: chore/infra/python.
+## Correccion CI en Docker (act) - 2026-10-31
+Modo ci ejecuta exclusivamente Python antes de consultar ramas o Git.
+Hooks locales conservan sufijos y bloqueos main/develop.
+Regresiones: 11 tests OK, incluidos CI sin .git y test con plataforma explicita.
+act push -j python-quality --pull=false: Job succeeded, exit 0.
+Formato, lint, tests/cobertura e informes superados dentro de Docker Linux.
+.actrc habilita servidor local de artefactos en .artifacts/act.
+Este resultado valida la infraestructura de ejemplo, no la implementacion AES.

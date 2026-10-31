@@ -109,6 +109,13 @@ def main():
     p.add_argument('--branch')
     p.add_argument('--platform', choices=PLATFORMS)
     args, _ = p.parse_known_args()
+    # CI has one contractual suite and must also work in source-only containers.
+    if args.stage == 'ci':
+        suite('python', args.stage)
+        return
+    if args.stage == 'test' and args.platform:
+        suite(args.platform, args.stage)
+        return
     branch = args.branch or subprocess.check_output(['git', 'branch', '--show-current'], cwd=ROOT, text=True).strip()
     if args.stage in ('pre-commit', 'pre-push') and branch in ('main', 'develop'):
         raise ValueError(f'Operacion bloqueada en {branch}; usa rama y Pull Request')

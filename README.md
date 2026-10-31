@@ -50,3 +50,6 @@ crear main/develop desde ese commit y trabajar por PR. Ver docs/REQUISITOS.md.
 Pruebas de la infraestructura (independientes de cobertura de aplicaciones):
 `py -3 scripts/test_quality.py`. Plantillas JaCoCo: archivos *.gradle.example;
 adaptarlos al importar proyectos reales, sin crear compilaciones ficticias.
+
+Guia: [CI/CD y hooks](docs/GUIA_CI_CD.md), [lectura HTML](docs/GUIA_CI_CD.html).
+Javadoc: [autoria y generacion](javafx/JAVADOC.md).
