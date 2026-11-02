@@ -1,0 +1,2 @@
+[console_scripts]
+enigma = enigma.cli:main

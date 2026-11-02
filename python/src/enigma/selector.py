@@ -96,7 +96,8 @@ def select_option(
         )
     if os.environ.get("TERM") == "dumb" or (os.name == "nt" and not _windows_ansi()):
         raise TerminalUnavailable(
-            "Esta terminal no permite mover el selector. Usa Windows Terminal."
+            "Esta terminal no permite mover el selector. Usa Windows Terminal "
+            "en Windows o una terminal con soporte ANSI en Linux."
         )
 
     selected = 0

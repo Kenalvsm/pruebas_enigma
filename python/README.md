@@ -5,7 +5,23 @@ No necesita Java, Android, Unity ni un servicio central.
 
 ## Instalación
 
-Los siguientes comandos se ejecutan desde la raíz del proyecto.
+Compatible con Windows, Ubuntu y Debian usando Python 3.14. Los siguientes
+comandos se ejecutan desde la raíz del repositorio. Con uv instalado, la misma
+instalación y ejecución sirve en los tres sistemas:
+
+```sh
+uv sync --locked --project python
+uv run --locked --project python enigma
+```
+
+uv puede descargar Python 3.14 si la distribución no lo proporciona. Para pruebas:
+
+```sh
+uv sync --locked --extra dev --project python
+uv run --locked --extra dev --project python python scripts/quality.py ci
+```
+
+También se admite la instalación manual siguiente.
 
 Windows:
 
@@ -62,10 +78,18 @@ la operación. Las rutas con espacios están admitidas. Las claves se
 introducen con entrada oculta en una terminal interactiva. Un error de archivo,
 validación o autenticación permite volver al menú.
 
-Los selectores necesitan una sesión de escritorio y Tkinter. En Windows, el
-instalador oficial de Python incluye Tcl/Tk; en Linux puede ser necesario instalar
-el paquete `python3-tk` correspondiente a Python 3.14. El menú y las claves siguen
-en la consola.
+Con Tkinter y una sesión de escritorio se abren diálogos nativos en los tres
+sistemas. Si falta Tkinter o no se puede abrir una ventana (por ejemplo, SSH),
+se pide la ruta en la terminal. Admite espacios, comillas alrededor de la ruta y
+`~` para la carpeta personal. Una entrada vacía cancela; al guardar se añade la
+extensión propuesta si el nombre no tiene ninguna. Se siguen rechazando destinos
+existentes. El menú requiere una terminal interactiva con soporte ANSI.
+
+Tkinter es opcional y no se instala con pip. Para usar ventanas, activa Tcl/Tk
+en el instalador de Python en Windows. En Ubuntu/Debian instala el módulo Tk de
+la misma versión e instalación de Python que ejecuta Enigma; `python3-tk` del
+sistema no añade Tk a otro intérprete descargado por uv. Comprueba la instalación
+con `uv run --project python python -m tkinter` desde una sesión de escritorio.
 
 La terminal usa magenta `#C90068`, azul `#0003C9`, verde `#00C962` y amarillo
 `#C9C600` en el título, los números del menú y los indicadores de estado. Estos
@@ -150,15 +174,16 @@ pruebas de rutas existentes y de colisión al publicar usan archivos reales.
 
 ## Hooks y workflow preparado
 
-La configuración raíz `.pre-commit-config.yaml` comprueba formato, lint y pruebas
-rápidas sin las pruebas de aceptación grandes. Tras disponer de un repositorio
-Git y activar el entorno, puede instalarse con `pre-commit install` desde la raíz.
+Los hooks nativos `.githooks/pre-commit` y `.githooks/pre-push` llaman a
+`scripts/quality.py` y ejecutan la suite de la plataforma indicada por la rama.
+Para Python incluyen formato, lint, aceptación y cobertura mínima del 80 %.
 
-`.github/workflows/python.yml` está preparado para instalar las versiones fijadas,
-comprobar formato y lint, ejecutar pruebas con umbral 80 %, generar informes y
-adjuntarlos como artefactos. Solo contiene trabajo Python. Su validación remota,
-la protección de ramas y el ensayo con `act`/Docker se documentarán cuando se
-autorice publicar y se disponga del entorno correspondiente.
+`.github/workflows/ci.yml` ejecuta la misma suite Python en Windows, Ubuntu y un
+contenedor Debian Bookworm con Python 3.14. Publica informes separados y conserva
+el check requerido `Python - lint, tests y cobertura >=80%`, que solo pasa si
+pasan los tres sistemas. Las pruebas unitarias de diálogos simulan Tkinter;
+comprueban también la selección de rutas sin Tk y sin escritorio. Las ventanas
+reales requieren una comprobación manual en una sesión gráfica.
 
 ## Estructura
 

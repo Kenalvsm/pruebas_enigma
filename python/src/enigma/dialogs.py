@@ -2,11 +2,27 @@
 
 from pathlib import Path
 
-from enigma.errors import OperationCancelled, ValidationError
+from enigma.errors import OperationCancelled
 
 ALL_FILES = (("Todos los archivos", "*"),)
 TEXT_FILES = (("Archivos de texto", "*.txt"),) + ALL_FILES
 ENCRYPTED_FILES = (("Contenedores R2AE", "*.enc"),) + ALL_FILES
+
+
+def _prompt_path(title: str, *, save: bool, default: Path | None, extension: str) -> Path:
+    print(f"{title}: selector de archivos en la terminal (sin escritorio disponible).")
+    hint = f" [{default}]" if save and default is not None else ""
+    value = input(f"Ruta{hint} (vacío para cancelar): ").strip()
+    if not value:
+        raise OperationCancelled
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+        value = value[1:-1]
+    if not value:
+        raise OperationCancelled
+    path = Path(value).expanduser()
+    if save and extension and not path.suffix:
+        path = path.with_suffix(extension)
+    return path
 
 
 def choose_path(
@@ -20,11 +36,8 @@ def choose_path(
     try:
         import tkinter as tk
         from tkinter import filedialog
-    except ImportError as error:
-        raise ValidationError(
-            "El explorador necesita Tkinter. Instala Python con Tcl/Tk "
-            "(en Linux, el paquete python3-tk de tu versión de Python)."
-        ) from error
+    except ImportError:
+        return _prompt_path(title, save=save, default=default, extension=extension)
 
     root = None
     try:
@@ -44,10 +57,8 @@ def choose_path(
             value = filedialog.asksaveasfilename(defaultextension=extension, **options)
         else:
             value = filedialog.askopenfilename(**options)
-    except tk.TclError as error:
-        raise ValidationError(
-            "No se pudo abrir el explorador. Ejecuta Enigma en una sesión de escritorio."
-        ) from error
+    except tk.TclError:
+        return _prompt_path(title, save=save, default=default, extension=extension)
     finally:
         if root is not None:
             root.destroy()

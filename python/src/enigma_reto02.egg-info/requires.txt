@@ -1,0 +1,8 @@
+cryptography==50.0.2
+
+[dev]
+build==1.6.1
+pre-commit==4.7.0
+pytest==9.2.0
+pytest-cov==7.1.0
+ruff==0.17.3
