@@ -43,11 +43,11 @@ def suite(platform, stage):
     out = ROOT / '.artifacts' / platform
     out.mkdir(parents=True, exist_ok=True)
     if platform == 'python':
-        run(UV + ['sync', '--locked', '--project', project])
-        uv = UV + ['run', '--locked', '--project', project]
+        run(UV + ['sync', '--locked', '--extra', 'dev', '--project', project])
+        uv = UV + ['run', '--locked', '--extra', 'dev', '--project', project]
         run(uv + ['ruff', 'format', '--check', '.'], project)
         run(uv + ['ruff', 'check', '.'], project)
-        run(uv + ['pytest', '--cov=src', '--cov-fail-under=80',
+        run(uv + ['python', '-m', 'pytest', '--cov=src', '--cov-fail-under=80',
                   '--cov-report=term-missing', f'--cov-report=xml:{out / "coverage.xml"}',
                   f'--cov-report=html:{out / "html"}', f'--junitxml={out / "junit.xml"}'], project)
     elif platform in ('javafx', 'android'):

@@ -1,0 +1,136 @@
+* Getting build dependencies for sdist...
+running egg_info
+writing src\enigma_reto02.egg-info\PKG-INFO
+writing dependency_links to src\enigma_reto02.egg-info\dependency_links.txt
+writing entry points to src\enigma_reto02.egg-info\entry_points.txt
+writing requirements to src\enigma_reto02.egg-info\requires.txt
+writing top-level names to src\enigma_reto02.egg-info\top_level.txt
+reading manifest file 'src\enigma_reto02.egg-info\SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+writing manifest file 'src\enigma_reto02.egg-info\SOURCES.txt'
+* Building sdist...
+running sdist
+running egg_info
+writing src\enigma_reto02.egg-info\PKG-INFO
+writing dependency_links to src\enigma_reto02.egg-info\dependency_links.txt
+writing entry points to src\enigma_reto02.egg-info\entry_points.txt
+writing requirements to src\enigma_reto02.egg-info\requires.txt
+writing top-level names to src\enigma_reto02.egg-info\top_level.txt
+reading manifest file 'src\enigma_reto02.egg-info\SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+writing manifest file 'src\enigma_reto02.egg-info\SOURCES.txt'
+running check
+creating enigma_reto02-1.0.0
+creating enigma_reto02-1.0.0\scripts
+creating enigma_reto02-1.0.0\src\enigma
+creating enigma_reto02-1.0.0\src\enigma_reto02.egg-info
+creating enigma_reto02-1.0.0\tests
+creating enigma_reto02-1.0.0\tests\fixtures
+copying files to enigma_reto02-1.0.0...
+copying MANIFEST.in -> enigma_reto02-1.0.0
+copying README.md -> enigma_reto02-1.0.0
+copying main.py -> enigma_reto02-1.0.0
+copying pyproject.toml -> enigma_reto02-1.0.0
+copying requirements-dev.lock -> enigma_reto02-1.0.0
+copying requirements-runtime.lock -> enigma_reto02-1.0.0
+copying scripts\verify_acceptance.py -> enigma_reto02-1.0.0\scripts
+copying src\enigma\__init__.py -> enigma_reto02-1.0.0\src\enigma
+copying src\enigma\__main__.py -> enigma_reto02-1.0.0\src\enigma
+copying src\enigma\aes.py -> enigma_reto02-1.0.0\src\enigma
+copying src\enigma\cli.py -> enigma_reto02-1.0.0\src\enigma
+copying src\enigma\dialogs.py -> enigma_reto02-1.0.0\src\enigma
+copying src\enigma\errors.py -> enigma_reto02-1.0.0\src\enigma
+copying src\enigma\files.py -> enigma_reto02-1.0.0\src\enigma
+copying src\enigma\selector.py -> enigma_reto02-1.0.0\src\enigma
+copying src\enigma\terminal.py -> enigma_reto02-1.0.0\src\enigma
+copying src\enigma\vigenere.py -> enigma_reto02-1.0.0\src\enigma
+copying src\enigma_reto02.egg-info\PKG-INFO -> enigma_reto02-1.0.0\src\enigma_reto02.egg-info
+copying src\enigma_reto02.egg-info\SOURCES.txt -> enigma_reto02-1.0.0\src\enigma_reto02.egg-info
+copying src\enigma_reto02.egg-info\dependency_links.txt -> enigma_reto02-1.0.0\src\enigma_reto02.egg-info
+copying src\enigma_reto02.egg-info\entry_points.txt -> enigma_reto02-1.0.0\src\enigma_reto02.egg-info
+copying src\enigma_reto02.egg-info\requires.txt -> enigma_reto02-1.0.0\src\enigma_reto02.egg-info
+copying src\enigma_reto02.egg-info\top_level.txt -> enigma_reto02-1.0.0\src\enigma_reto02.egg-info
+copying tests\test_acceptance.py -> enigma_reto02-1.0.0\tests
+copying tests\test_aes.py -> enigma_reto02-1.0.0\tests
+copying tests\test_cli.py -> enigma_reto02-1.0.0\tests
+copying tests\test_dialogs.py -> enigma_reto02-1.0.0\tests
+copying tests\test_files.py -> enigma_reto02-1.0.0\tests
+copying tests\test_selector.py -> enigma_reto02-1.0.0\tests
+copying tests\test_vigenere.py -> enigma_reto02-1.0.0\tests
+copying tests\fixtures\r2ae-v1.json -> enigma_reto02-1.0.0\tests\fixtures
+copying src\enigma_reto02.egg-info\SOURCES.txt -> enigma_reto02-1.0.0\src\enigma_reto02.egg-info
+Writing enigma_reto02-1.0.0\setup.cfg
+Creating tar archive
+removing 'enigma_reto02-1.0.0' (and everything under it)
+* Building wheel from sdist
+* Getting build dependencies for wheel...
+running egg_info
+writing src\enigma_reto02.egg-info\PKG-INFO
+writing dependency_links to src\enigma_reto02.egg-info\dependency_links.txt
+writing entry points to src\enigma_reto02.egg-info\entry_points.txt
+writing requirements to src\enigma_reto02.egg-info\requires.txt
+writing top-level names to src\enigma_reto02.egg-info\top_level.txt
+reading manifest file 'src\enigma_reto02.egg-info\SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+writing manifest file 'src\enigma_reto02.egg-info\SOURCES.txt'
+* Building wheel...
+running bdist_wheel
+running build
+running build_py
+creating build\lib\enigma
+copying src\enigma\aes.py -> build\lib\enigma
+copying src\enigma\cli.py -> build\lib\enigma
+copying src\enigma\dialogs.py -> build\lib\enigma
+copying src\enigma\errors.py -> build\lib\enigma
+copying src\enigma\files.py -> build\lib\enigma
+copying src\enigma\selector.py -> build\lib\enigma
+copying src\enigma\terminal.py -> build\lib\enigma
+copying src\enigma\vigenere.py -> build\lib\enigma
+copying src\enigma\__init__.py -> build\lib\enigma
+copying src\enigma\__main__.py -> build\lib\enigma
+running egg_info
+writing src\enigma_reto02.egg-info\PKG-INFO
+writing dependency_links to src\enigma_reto02.egg-info\dependency_links.txt
+writing entry points to src\enigma_reto02.egg-info\entry_points.txt
+writing requirements to src\enigma_reto02.egg-info\requires.txt
+writing top-level names to src\enigma_reto02.egg-info\top_level.txt
+reading manifest file 'src\enigma_reto02.egg-info\SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+writing manifest file 'src\enigma_reto02.egg-info\SOURCES.txt'
+installing to build\bdist.win-amd64\wheel
+running install
+running install_lib
+creating build\bdist.win-amd64\wheel
+creating build\bdist.win-amd64\wheel\enigma
+copying build\lib\enigma\aes.py -> build\bdist.win-amd64\wheel\.\enigma
+copying build\lib\enigma\cli.py -> build\bdist.win-amd64\wheel\.\enigma
+copying build\lib\enigma\dialogs.py -> build\bdist.win-amd64\wheel\.\enigma
+copying build\lib\enigma\errors.py -> build\bdist.win-amd64\wheel\.\enigma
+copying build\lib\enigma\files.py -> build\bdist.win-amd64\wheel\.\enigma
+copying build\lib\enigma\selector.py -> build\bdist.win-amd64\wheel\.\enigma
+copying build\lib\enigma\terminal.py -> build\bdist.win-amd64\wheel\.\enigma
+copying build\lib\enigma\vigenere.py -> build\bdist.win-amd64\wheel\.\enigma
+copying build\lib\enigma\__init__.py -> build\bdist.win-amd64\wheel\.\enigma
+copying build\lib\enigma\__main__.py -> build\bdist.win-amd64\wheel\.\enigma
+running install_egg_info
+Copying src\enigma_reto02.egg-info to build\bdist.win-amd64\wheel\.\enigma_reto02-1.0.0-py3.14.egg-info
+running install_scripts
+creating build\bdist.win-amd64\wheel\enigma_reto02-1.0.0.dist-info\WHEEL
+creating 'C:\\Users\\dm2\\Documents\\paython\\python\\dist\\.tmp-guhlodh8\\enigma_reto02-1.0.0-py3-none-any.whl' and adding 'build\\bdist.win-amd64\\wheel' to it
+adding 'enigma/__init__.py'
+adding 'enigma/__main__.py'
+adding 'enigma/aes.py'
+adding 'enigma/cli.py'
+adding 'enigma/dialogs.py'
+adding 'enigma/errors.py'
+adding 'enigma/files.py'
+adding 'enigma/selector.py'
+adding 'enigma/terminal.py'
+adding 'enigma/vigenere.py'
+adding 'enigma_reto02-1.0.0.dist-info/METADATA'
+adding 'enigma_reto02-1.0.0.dist-info/WHEEL'
+adding 'enigma_reto02-1.0.0.dist-info/entry_points.txt'
+adding 'enigma_reto02-1.0.0.dist-info/top_level.txt'
+adding 'enigma_reto02-1.0.0.dist-info/RECORD'
+removing build\bdist.win-amd64\wheel
+Successfully built enigma_reto02-1.0.0.tar.gz and enigma_reto02-1.0.0-py3-none-any.whl

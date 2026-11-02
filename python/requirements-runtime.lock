@@ -1,0 +1,7 @@
+# Python 3.14; versiones directas y transitivas fijadas.
+cffi==2.1.1
+cryptography==50.0.2
+packaging==26.3
+pycparser==3.12
+setuptools==82.0.1
+wheel==0.48.0
