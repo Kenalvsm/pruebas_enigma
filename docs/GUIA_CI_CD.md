@@ -34,7 +34,10 @@ No usar `--no-verify`. Las reglas del servidor GitHub deben exigir PR, revisión
 ## Docker y act: comandos validados
 Con Docker Desktop iniciado en contenedores Linux:
 ```powershell
-cd C:\Users\WinterOS\vento\ejemplos
+winget install nektos.act
+```
+
+```powershell
 $actDir = "$env:LOCALAPPDATA\Microsoft\WinGet\Packages\nektos.act_Microsoft.Winget.Source_8wekyb3d8bbwe"
 $env:Path += ";$actDir"
 docker info
