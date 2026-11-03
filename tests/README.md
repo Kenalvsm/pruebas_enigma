@@ -23,6 +23,7 @@ las pruebas de aceptacion ni generan cobertura de las aplicaciones.
 
 Para reproducir el workflow en Docker desde los tres sistemas host, seguir
 las [instrucciones de act](../README.md#cicd-local-con-docker-y-act-windows-debian-y-ubuntu)
-y ejecutar `act push -j python-quality` desde la raiz. El job solo comprueba
+y ejecutar `act push -j python-quality --artifact-server-path .artifacts/act`
+desde la raiz. El job solo comprueba
 Python; no ejecuta las pruebas cruzadas de esta carpeta. Los artefactos de act
 quedan en `.artifacts/act/`.

@@ -27,5 +27,6 @@ se usa `gradlew`; en Windows, `gradlew.bat`. Trabajar en ramas terminadas en
 `/javafx` para que los hooks seleccionen esta suite.
 
 El [workflow local con Docker y act](../README.md#cicd-local-con-docker-y-act-windows-debian-y-ubuntu)
-se lanza desde cualquiera de esos hosts con `act push -j python-quality`.
+se lanza desde cualquiera de esos hosts con
+`act push -j python-quality --artifact-server-path .artifacts/act`.
 El workflow actual solo comprueba Python; las pruebas JavaFX son locales.

@@ -30,5 +30,6 @@ en Windows, `gradlew.bat`. Las ramas terminadas en `/android` seleccionan esta
 suite en los hooks. La instrumentacion sigue necesitando emulador o dispositivo.
 
 El [workflow local con Docker y act](../README.md#cicd-local-con-docker-y-act-windows-debian-y-ubuntu)
-se lanza desde cualquiera de esos hosts con `act push -j python-quality`.
+se lanza desde cualquiera de esos hosts con
+`act push -j python-quality --artifact-server-path .artifacts/act`.
 El workflow actual solo comprueba Python; no ejecuta el SDK ni el emulador Android.

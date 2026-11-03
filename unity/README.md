@@ -11,8 +11,10 @@ Validar ejecutable Windows 11 x64 manualmente y conservar capturas/logs.
 
 La preparacion de hooks y la ejecucion del workflow con Docker y act estan en
 el [README principal](../README.md#cicd-local-con-docker-y-act-windows-debian-y-ubuntu).
-Desde la raiz, `act push -j python-quality` ejecuta el mismo job Linux con
-cualquiera de esos hosts. Este workflow no instala ni ejecuta Unity.
+Desde la raiz, ejecutar
+`act push -j python-quality --artifact-server-path .artifacts/act`
+para lanzar el mismo job Linux con cualquiera de esos hosts. Este workflow
+no instala ni ejecuta Unity.
 
 Para las pruebas locales de Unity, ademas del proyecto real, hace falta un
 Editor 6.3 instalado, con licencia y compatible con el sistema host. Definir

@@ -80,9 +80,9 @@ Con ambos comandos disponibles en PATH, desde la raiz:
 docker info
 act --version
 act -l
-act push -j python-quality
+act push -j python-quality --artifact-server-path .artifacts/act
 # Repetir con la imagen ya descargada:
-act push -j python-quality --pull=false
+act push -j python-quality --artifact-server-path .artifacts/act --pull=false
 ```
 
 ### Debian y Ubuntu (Bash)
@@ -120,9 +120,9 @@ Desde la raiz del repositorio, ya con acceso a Docker sin sudo:
 
 ```bash
 act -l
-act push -j python-quality
+act push -j python-quality --artifact-server-path .artifacts/act
 # Repetir con la imagen ya descargada:
-act push -j python-quality --pull=false
+act push -j python-quality --artifact-server-path .artifacts/act --pull=false
 ```
 
 La primera ejecucion descarga la imagen, las acciones y las dependencias;
@@ -135,7 +135,11 @@ Esperar `Job succeeded` y codigo de salida 0. Las comprobaciones requieren
 formato, lint, tests y cobertura >=80%; un fallo real bloquea el job.
 Los informes de ejecucion directa quedan en `.artifacts/python/` (JUnit,
 cobertura XML y HTML). Con act, los artefactos subidos se conservan en
-`.artifacts/act/`, segun `.actrc`. No versionar esos directorios.
+`.artifacts/act/`. Pasar `--artifact-server-path .artifacts/act` explicitamente:
+act 0.2.94 ignora esa opcion dentro del `.actrc` del proyecto. Sin el servidor
+local, el paso de informes falla por falta de `ACTIONS_RUNTIME_TOKEN` aunque
+las pruebas pasen. No hace falta configurar un token de GitHub para este
+servidor local. No versionar esos directorios.
 
 Para ejecutar el mismo control directamente en el host, sin Docker, tras
 instalar los requisitos anteriores:
@@ -152,7 +156,10 @@ python scripts/quality.py ci
 
 Los commits y pushes ejecutan los hooks segun el sufijo de la rama; para probar
 el hook de commit manualmente, usar `git hook run pre-commit` desde una rama de
-trabajo valida. El CI remoto se inicia al hacer push o abrir un PR y tambien
+trabajo valida. Al hacer push, indicar el nombre de la rama local, por ejemplo
+`git push -u origin test/tarea/python`: el hook rechaza el refspec `HEAD`
+porque exige la referencia de la rama actual. El CI remoto se inicia al hacer
+push o abrir un PR y tambien
 admite `workflow_dispatch` desde la pestaña Actions. act ejecuta localmente
 sin publicar commits. El workflow actual realiza comprobaciones y publica
 informes; no contiene una etapa de despliegue (CD).

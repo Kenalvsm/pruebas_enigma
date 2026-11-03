@@ -184,14 +184,15 @@ Desde la raíz del repositorio, con Docker y act instalados, el comando es el
 mismo en los tres hosts:
 
 ```sh
-act push -j python-quality
+act push -j python-quality --artifact-server-path .artifacts/act
 ```
 
 `.github/workflows/ci.yml` tiene un único job en `ubuntu-latest`, con el check
 `Python - lint, tests y cobertura >=80%`. act lo ejecuta en la imagen Linux
 definida en `.actrc`, independientemente del sistema host; no hay una matriz
 de runners Windows/Debian/Ubuntu. Los artefactos de act se conservan en
-`.artifacts/act/`; la ejecución directa de `scripts/quality.py ci` escribe en
+`.artifacts/act/` gracias a la opción explícita de servidor local; la ejecución
+directa de `scripts/quality.py ci` escribe en
 `.artifacts/python/`. El workflow publica informes y no despliega la aplicación.
 
 Las pruebas unitarias de diálogos simulan Tkinter;
