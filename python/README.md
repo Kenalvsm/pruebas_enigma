@@ -178,10 +178,23 @@ Los hooks nativos `.githooks/pre-commit` y `.githooks/pre-push` llaman a
 `scripts/quality.py` y ejecutan la suite de la plataforma indicada por la rama.
 Para Python incluyen formato, lint, aceptación y cobertura mínima del 80 %.
 
-`.github/workflows/ci.yml` ejecuta la misma suite Python en Windows, Ubuntu y un
-contenedor Debian Bookworm con Python 3.14. Publica informes separados y conserva
-el check requerido `Python - lint, tests y cobertura >=80%`, que solo pasa si
-pasan los tres sistemas. Las pruebas unitarias de diálogos simulan Tkinter;
+Para preparar Windows, Debian o Ubuntu como **máquina host** del CI local,
+consulta el [README principal](../README.md#cicd-local-con-docker-y-act-windows-debian-y-ubuntu).
+Desde la raíz del repositorio, con Docker y act instalados, el comando es el
+mismo en los tres hosts:
+
+```sh
+act push -j python-quality
+```
+
+`.github/workflows/ci.yml` tiene un único job en `ubuntu-latest`, con el check
+`Python - lint, tests y cobertura >=80%`. act lo ejecuta en la imagen Linux
+definida en `.actrc`, independientemente del sistema host; no hay una matriz
+de runners Windows/Debian/Ubuntu. Los artefactos de act se conservan en
+`.artifacts/act/`; la ejecución directa de `scripts/quality.py ci` escribe en
+`.artifacts/python/`. El workflow publica informes y no despliega la aplicación.
+
+Las pruebas unitarias de diálogos simulan Tkinter;
 comprueban también la selección de rutas sin Tk y sin escritorio. Las ventanas
 reales requieren una comprobación manual en una sesión gráfica.
 
