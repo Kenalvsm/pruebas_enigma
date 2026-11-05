@@ -17,5 +17,4 @@ def dividir(a: float, b: float) -> float:
     """Devuelve la division de dos numeros."""
     if b == 0:
         raise ValueError("No se puede dividir entre cero")
-
     return a / b

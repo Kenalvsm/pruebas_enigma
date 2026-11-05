@@ -51,20 +51,25 @@ omite. Genera JUnit, cobertura XML y HTML en .artifacts/python.
 .actrc fija el job python-quality, asi que `act push` ejecuta solo Python.
 `act push` verificado el 2026-11-05 con Docker Desktop: un unico job,
 Job succeeded y artefacto python-informes en .artifacts/act/1.
-origin apunta al repositorio y la rama chore/infra/python esta publicada; el
-workflow de GitHub aun no se ha visto ejecutado alli.
+origin apunta al repositorio y la rama chore/infra/python esta publicada.
+GitHub Actions ejecuto el workflow alli: runs 42088483496 y 42088604372 en
+success, un solo job y artefacto con 45 tests y cobertura 100%.
 
-## Proteccion en GitHub (ruleset pendiente)
-Crear ruleset para main y develop: impedir borrados y force-push, exigir PR,
-una aprobacion de otro miembro, conversaciones resueltas y check
-`Python - lint, tests y cobertura >=80%`. No permitir bypass habitual.
-Hooks locales pueden omitirse y no sustituyen reglas del servidor.
-origin: https://github.com/Kenalvsm/pruebas_enigma.git; las ramas publicadas
-hasta ahora salen de chore/infra/python. Falta crear el ruleset.
+## Ramas remotas y proteccion en GitHub
+main y develop existen en origin, ambas en el commit 660fdb1 ya validado.
+La rama por defecto del repositorio sigue siendo chore/infra/python; conviene
+cambiarla a main cuando se empiece a integrar por PR.
+El repositorio es publico y el ruleset `Proteccion main y develop` (id 26649432)
+esta activo sobre refs/heads/main y refs/heads/develop: prohibe borrados y
+force-push, exige PR con una aprobacion ajena, conversaciones resueltas y el
+check `Python - lint, tests y cobertura >=80%` en modo estricto, sin bypass para
+administradores. El push directo a main o develop se rechaza en el servidor
+incluso con --no-verify. La definicion versionada esta en
+`docs/ruleset-main-develop.json` (Settings -> Rules -> Import).
+Con una sola cuenta hace falta otra persona para aprobar el PR de integracion.
 
 Cada integrante debe producir cambios reales con su identidad y abrir PR
-contra develop; crear main/develop y el ruleset al revisar el primer PR.
-Ver docs/REQUISITOS.md.
+contra develop. Ver docs/REQUISITOS.md.
 
 Pruebas de la infraestructura (independientes de la cobertura de la aplicacion):
 `py -3 scripts/test_quality.py`.

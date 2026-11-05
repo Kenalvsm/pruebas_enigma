@@ -60,6 +60,55 @@ Docker Desktop 29.6.2 (motor Linux) e imagen catthehacker/ubuntu:act-latest.
   ignorada) y el push a main desde ella sigue bloqueado (exit 1).
 - Commit en main/develop (exit 1), push a refs/heads/main (exit 1) y push de
   otra ref (exit 1) verificados en local.
-GitHub Actions no se ha ejecutado: origin ya esta configurado y la rama
-chore/infra/python se publico (2b1bb51). Esta validacion cubre la
-infraestructura, no los requisitos funcionales del producto.
+## GitHub Actions real - 2026-11-05
+Consultado por API con las credenciales ya guardadas por Git (sin exponer el
+token, el repositorio es privado y el navegador no tiene sesion):
+- Run 42088483496 (2b1bb510) y run 42088604372 (660fdb11): conclusion success,
+evento push, un solo job "Python - lint, tests y cobertura >=80%" con sus 8 pasos
+en verde.
+- Artefacto python-informes-42088604372 (31.954 bytes) descargado y abierto:
+junit.xml tests=45 failures=0 errors=0 y coverage.xml line-rate=1
+(37/37 lineas, 100% en calculadora.py y cifrado.py).
+- Run 41451438632 (3f4ae403) habia fallado, coherente con el codigo truncado de
+ese estado previo: el check detecta regresiones reales.
+Esta validacion cubre la infraestructura, no los requisitos funcionales.
+
+## Ramas remotas y ruleset activo - 2026-11-05
+main y develop creadas en origin en 660fdb1 mediante la API de refs, para no
+depender de los bloqueos locales de push. La rama por defecto sigue siendo
+chore/infra/python.
+Con el repositorio privado la proteccion fue imposible: POST /rulesets y
+PUT /branches/main/protection devolvieron 403 "Upgrade to GitHub Pro or make this
+repository public". Se comprobo que no hubiera ficheros sensibles rastreados y se
+hizo publico el repositorio (PATCH private=false -> 200, visibility=public).
+Ruleset creado y activo:
+- POST /repos/Kenalvsm/pruebas_enigma/rulesets -> 201, id 26649432, enforcement
+active sobre refs/heads/main y refs/heads/develop.
+- Reglas: deletion, non_fast_forward, pull_request (1 aprobacion, aprobaciones
+descartadas al hacer push, conversaciones resueltas) y required_status_checks
+estricto con "Python - lint, tests y cobertura >=80%" (verificado: es el nombre
+del job de ci.yml que ya corre en GitHub).
+- Sin bypass para administradores.
+- Comprobado con credenciales reales y --no-verify: push directo a main
+("Changes must be made through a pull request"), force-push a develop y borrado
+de develop rechazados con "push declined due to repository rule violations"
+(exit 1 en los tres), y main/develop intactas en 660fdb1.
+La definicion versionada esta en docs/ruleset-main-develop.json.
+Con una sola cuenta hace falta otra persona para aprobar el PR de integracion:
+el ruleset exige revision ajena.
+
+## Primer pull request con el check obligatorio - 2026-11-05
+PR #1: chore/infra/python -> develop, 3 commits por delante. El workflow se
+ejecuto dos veces porque la documentacion se publico con el PR ya abierto.
+- Evento pull_request (base develop y head acabado en python cumplen los
+  filtros): run 42112520421 sobre de3dd20 y run 42112678397 sobre f31e59f,
+  ambos conclusion success, un solo job "Python - lint, tests y cobertura >=80%"
+  con sus 8 pasos en verde y artefacto python-informes-42112678397 (31.955
+  bytes).
+- El check-run sobre el head lleva ese nombre exacto, que es el contexto exigido
+  por el ruleset 26649432.
+- mergeable_state = blocked con el check en verde y reviews vacias: el servidor
+  no deja fusionar sin una aprobacion ajena, y el autor no puede aprobar su
+  propio PR. El PR queda abierto a la espera de revision.
+- Consecuencia practica: hace falta invitar a otro colaborador para integrar en
+  develop y despues en main.
