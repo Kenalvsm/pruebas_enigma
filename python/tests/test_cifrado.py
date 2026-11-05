@@ -3,17 +3,41 @@ import pytest
 from src.cifrado import cifrar, descifrar, validar_clave
 
 
-def test_vector_conocido() -> None:
-    assert cifrar("HOLA", "BC") == "IQMC"
+@pytest.mark.parametrize(
+    ("texto", "clave", "esperado"),
+    [
+        ("HOLA", "BC", "IQMC"),
+        ("CIFRADO", "CLAVE", "ETFMEFZ"),
+        ("cifrado", "clave", "etfmefz"),
+        ("Z", "B", "A"),
+        ("A", "Z", "Z"),
+        ("Ñandú 123", "B", "Ñboeú 123"),
+        ("Hola, mundo!", "B", "Ipmb, nvoep!"),
+    ],
+)
+def test_cifrar_esperado(texto: str, clave: str, esperado: str) -> None:
+    assert cifrar(texto, clave) == esperado
+
+
+@pytest.mark.parametrize(
+    ("texto", "clave", "esperado"),
+    [
+        ("IQMC", "BC", "HOLA"),
+        ("ETFMEFZ", "CLAVE", "CIFRADO"),
+        ("etfmefz", "clave", "cifrado"),
+        ("A", "B", "Z"),
+        ("Z", "Z", "A"),
+        ("Ñboeú 123", "B", "Ñandú 123"),
+        ("Ipmb, nvoep!", "B", "Hola, mundo!"),
+    ],
+)
+def test_descifrar_esperado(texto: str, clave: str, esperado: str) -> None:
+    assert descifrar(texto, clave) == esperado
 
 
 def test_ida_y_vuelta() -> None:
     texto = "En un lugar de la Mancha, de cuyo nombre no quiero acordarme."
     assert descifrar(cifrar(texto, "clave"), "clave") == texto
-
-
-def test_mayusculas_y_signos_se_conservan() -> None:
-    assert cifrar("Hola, mundo!", "B") == "Ipmb, nvoep!"
 
 
 def test_acentos_y_enie_no_avanzan_la_clave() -> None:
