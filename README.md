@@ -51,18 +51,20 @@ omite. Genera JUnit, cobertura XML y HTML en .artifacts/python.
 .actrc fija el job python-quality, asi que `act push` ejecuta solo Python.
 `act push` verificado el 2026-11-05 con Docker Desktop: un unico job,
 Job succeeded y artefacto python-informes en .artifacts/act/1.
-GitHub sigue pendiente: no hay remoto conectado.
+origin apunta al repositorio y la rama chore/infra/python esta publicada; el
+workflow de GitHub aun no se ha visto ejecutado alli.
 
-## Proteccion en GitHub (pendiente de vincular remoto)
+## Proteccion en GitHub (ruleset pendiente)
 Crear ruleset para main y develop: impedir borrados y force-push, exigir PR,
 una aprobacion de otro miembro, conversaciones resueltas y check
 `Python - lint, tests y cobertura >=80%`. No permitir bypass habitual.
 Hooks locales pueden omitirse y no sustituyen reglas del servidor.
-No hay remote configurado ni push efectuado por esta preparacion.
+origin: https://github.com/Kenalvsm/pruebas_enigma.git; las ramas publicadas
+hasta ahora salen de chore/infra/python. Falta crear el ruleset.
 
-No se han creado commits: cada integrante debe producir cambios reales con
-su identidad. Tras revisar, hacer el primer commit desde chore/infra/python;
-crear main/develop desde ese commit y trabajar por PR. Ver docs/REQUISITOS.md.
+Cada integrante debe producir cambios reales con su identidad y abrir PR
+contra develop; crear main/develop y el ruleset al revisar el primer PR.
+Ver docs/REQUISITOS.md.
 
 Pruebas de la infraestructura (independientes de la cobertura de la aplicacion):
 `py -3 scripts/test_quality.py`.

@@ -52,10 +52,14 @@ Docker Desktop 29.6.2 (motor Linux) e imagen catthehacker/ubuntu:act-latest.
 - Segunda pasada con codigo y tests nuevos (cifrado Vigenere P-01): gate local
   17 tests passed, cobertura 100% y `act push` de nuevo Job succeeded, exit 0,
   con 17 tests dentro del contenedor.
+- Tercera pasada (multiplicar y tablas de resultados esperados): gate y hooks
+  45 tests passed, cobertura 100% y `act push` Job succeeded con 45 tests y
+  artefacto de 31.960 bytes.
 - Hooks reales: pre-commit y pre-push exit 0 en rama chore/infra/python;
   en una rama feature/prueba/javafx ambos exit 0 sin ejecutar suite (rama
   ignorada) y el push a main desde ella sigue bloqueado (exit 1).
 - Commit en main/develop (exit 1), push a refs/heads/main (exit 1) y push de
   otra ref (exit 1) verificados en local.
-GitHub no se ha ejecutado: no hay remoto conectado. Esta validacion cubre la
+GitHub Actions no se ha ejecutado: origin ya esta configurado y la rama
+chore/infra/python se publico (2b1bb51). Esta validacion cubre la
 infraestructura, no los requisitos funcionales del producto.
