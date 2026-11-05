@@ -59,15 +59,14 @@ success, un solo job y artefacto con 45 tests y cobertura 100%.
 main y develop existen en origin, ambas en el commit 660fdb1 ya validado.
 La rama por defecto del repositorio sigue siendo chore/infra/python; conviene
 cambiarla a main cuando se empiece a integrar por PR.
-El ruleset previsto (impedir borrados y force-push, exigir PR con una aprobacion
-ajena, conversaciones resueltas y check `Python - lint, tests y cobertura >=80%`)
-no se puede activar en un repositorio privado con el plan gratuito: la API
-devuelve 403 "Upgrade to GitHub Pro or make this repository public", igual que
-la proteccion clasica de ramas. Queda listo para importar en
-`docs/ruleset-main-develop.json` (Settings -> Rules -> New ruleset -> Import).
-Hasta entonces la unica barrera es local: los hooks bloquean commit en
-main/develop y push hacia ellas, pero pueden omitirse y no sustituyen reglas del
-servidor.
+El repositorio es publico y el ruleset `Proteccion main y develop` (id 26649432)
+esta activo sobre refs/heads/main y refs/heads/develop: prohibe borrados y
+force-push, exige PR con una aprobacion ajena, conversaciones resueltas y el
+check `Python - lint, tests y cobertura >=80%` en modo estricto, sin bypass para
+administradores. El push directo a main o develop se rechaza en el servidor
+incluso con --no-verify. La definicion versionada esta en
+`docs/ruleset-main-develop.json` (Settings -> Rules -> Import).
+Con una sola cuenta hace falta otra persona para aprobar el PR de integracion.
 
 Cada integrante debe producir cambios reales con su identidad y abrir PR
 contra develop. Ver docs/REQUISITOS.md.

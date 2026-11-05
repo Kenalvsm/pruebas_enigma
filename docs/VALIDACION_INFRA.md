@@ -73,17 +73,26 @@ junit.xml tests=45 failures=0 errors=0 y coverage.xml line-rate=1
 ese estado previo: el check detecta regresiones reales.
 Esta validacion cubre la infraestructura, no los requisitos funcionales.
 
-## Ramas remotas y ruleset - 2026-11-05
+## Ramas remotas y ruleset activo - 2026-11-05
 main y develop creadas en origin en 660fdb1 mediante la API de refs, para no
 depender de los bloqueos locales de push. La rama por defecto sigue siendo
 chore/infra/python.
-Ruleset solicitado (sin borrados ni force-push, PR con 1 aprobacion ajena,
-conversaciones resueltas y check Python estricto):
-- POST /repos/Kenalvsm/pruebas_enigma/rulesets -> 403 "Upgrade to GitHub Pro or
-make this repository public to enable this feature".
-- PUT /repos/Kenalvsm/pruebas_enigma/branches/main/protection -> 403 con el mismo
-mensaje.
-El plan gratuito no permite proteger ramas en repositorios privados. La
-definicion queda en docs/ruleset-main-develop.json para importar cuando el
-repositorio sea publico o el plan lo permita; mientras tanto main y develop
-solo tienen la barrera local de los hooks.
+Con el repositorio privado la proteccion fue imposible: POST /rulesets y
+PUT /branches/main/protection devolvieron 403 "Upgrade to GitHub Pro or make this
+repository public". Se comprobo que no hubiera ficheros sensibles rastreados y se
+hizo publico el repositorio (PATCH private=false -> 200, visibility=public).
+Ruleset creado y activo:
+- POST /repos/Kenalvsm/pruebas_enigma/rulesets -> 201, id 26649432, enforcement
+active sobre refs/heads/main y refs/heads/develop.
+- Reglas: deletion, non_fast_forward, pull_request (1 aprobacion, aprobaciones
+descartadas al hacer push, conversaciones resueltas) y required_status_checks
+estricto con "Python - lint, tests y cobertura >=80%" (verificado: es el nombre
+del job de ci.yml que ya corre en GitHub).
+- Sin bypass para administradores.
+- Comprobado con credenciales reales y --no-verify: push directo a main
+("Changes must be made through a pull request"), force-push a develop y borrado
+de develop rechazados con "push declined due to repository rule violations"
+(exit 1 en los tres), y main/develop intactas en 660fdb1.
+La definicion versionada esta en docs/ruleset-main-develop.json.
+Con una sola cuenta hace falta otra persona para aprobar el PR de integracion:
+el ruleset exige revision ajena.
