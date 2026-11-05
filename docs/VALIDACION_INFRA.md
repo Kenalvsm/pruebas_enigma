@@ -60,6 +60,30 @@ Docker Desktop 29.6.2 (motor Linux) e imagen catthehacker/ubuntu:act-latest.
   ignorada) y el push a main desde ella sigue bloqueado (exit 1).
 - Commit en main/develop (exit 1), push a refs/heads/main (exit 1) y push de
   otra ref (exit 1) verificados en local.
-GitHub Actions no se ha ejecutado: origin ya esta configurado y la rama
-chore/infra/python se publico (2b1bb51). Esta validacion cubre la
-infraestructura, no los requisitos funcionales del producto.
+## GitHub Actions real - 2026-11-05
+Consultado por API con las credenciales ya guardadas por Git (sin exponer el
+token, el repositorio es privado y el navegador no tiene sesion):
+- Run 42088483496 (2b1bb510) y run 42088604372 (660fdb11): conclusion success,
+evento push, un solo job "Python - lint, tests y cobertura >=80%" con sus 8 pasos
+en verde.
+- Artefacto python-informes-42088604372 (31.954 bytes) descargado y abierto:
+junit.xml tests=45 failures=0 errors=0 y coverage.xml line-rate=1
+(37/37 lineas, 100% en calculadora.py y cifrado.py).
+- Run 41451438632 (3f4ae403) habia fallado, coherente con el codigo truncado de
+ese estado previo: el check detecta regresiones reales.
+Esta validacion cubre la infraestructura, no los requisitos funcionales.
+
+## Ramas remotas y ruleset - 2026-11-05
+main y develop creadas en origin en 660fdb1 mediante la API de refs, para no
+depender de los bloqueos locales de push. La rama por defecto sigue siendo
+chore/infra/python.
+Ruleset solicitado (sin borrados ni force-push, PR con 1 aprobacion ajena,
+conversaciones resueltas y check Python estricto):
+- POST /repos/Kenalvsm/pruebas_enigma/rulesets -> 403 "Upgrade to GitHub Pro or
+make this repository public to enable this feature".
+- PUT /repos/Kenalvsm/pruebas_enigma/branches/main/protection -> 403 con el mismo
+mensaje.
+El plan gratuito no permite proteger ramas en repositorios privados. La
+definicion queda en docs/ruleset-main-develop.json para importar cuando el
+repositorio sea publico o el plan lo permita; mientras tanto main y develop
+solo tienen la barrera local de los hooks.

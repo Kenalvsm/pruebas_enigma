@@ -47,7 +47,10 @@ Ambos hooks son scripts locales de Git, instalados mediante `core.hooksPath=.git
 
 En esta implementacion pre-commit NO ejecuta exclusivamente tests rapidos ni pre-push anade cobertura por primera vez: ambos llaman a la misma suite completa. Los tests se ejecutan sobre el arbol de trabajo actual, no sobre una copia aislada del indice. Revisar `git diff` y `git diff --cached` antes del commit.
 
-El framework llamado pre-commit es opcional; tener `.pre-commit-config.yaml` no sustituye la instalacion de los hooks nativos. No mezclar instalaciones sin revisar `core.hooksPath`. No usar `--no-verify`. Las reglas del servidor GitHub deben exigir PR, revision ajena, el check Python y restringir force-push/borrado en main/develop: los hooks se pueden desactivar localmente.
+El framework llamado pre-commit es opcional; tener `.pre-commit-config.yaml` no sustituye la instalacion de los hooks nativos. No mezclar instalaciones sin revisar `core.hooksPath`. No usar `--no-verify`. Las reglas del servidor GitHub deben exigir PR, revision ajena, el check Python y restringir force-push/borrado en main/develop: los hooks se pueden desactivar localmente. La definicion esta en
+`docs/ruleset-main-develop.json`; en un repositorio privado con plan gratuito
+GitHub rechaza activarla (403), asi que main/develop quedan sin proteccion del
+servidor hasta que el repositorio sea publico o el plan lo permita.
 
 ## Docker y act: comandos validados
 Con Docker Desktop iniciado en contenedores Linux:
