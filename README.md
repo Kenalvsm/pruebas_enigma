@@ -4,6 +4,21 @@ Estructura: python/, javafx/, android/, unity/, tests/, docs/.
 Los PDF y ejemplos se conservan. El instalador del agente y sus credenciales se
 excluyen de Git. No ejecutar git add -f sobre esos archivos.
 
+## Alcance actual: solo Python
+Todo el flujo automatico (CI/CD de GitHub, act, pre-commit y pre-push) se
+redujo a Python. JavaFX, Android y Unity nos estan dando demasiados problemas:
+dependencias de Gradle/AGP que no reproducen el entorno local, tareas que no
+generan informes reales, emuladores, Unity en batchmode y coberturas que no
+llegan al 80% por el propio andamiaje. Para no bloquear commits y PR por
+herramientas ajenas al avance del equipo, esas plataformas quedan fuera de la
+validacion.
+Los directorios javafx/, android/ y unity/ se conservan como referencia del
+contrato, pero no se ejecutan, no se miden y no cuentan como evidencia.
+La calculadora de python/ es solo demostracion de la infraestructura: no
+acredita los requisitos criptograficos. python/src/cifrado.py empieza P-01
+(Vigenere A-Z, clave de 1 a 64 letras, ñ/tildes y signos sin avance) con sus
+pruebas en python/tests/test_cifrado.py; el resto de requisitos sigue pendiente.
+
 ## Inicio por integrante
 Instalar Git, Python para herramientas y uv. Ejecutar:
 ```
@@ -14,27 +29,29 @@ En Linux: `sh scripts/install-hooks.sh`. Cada persona configura su propia
 identidad con git config user.name y user.email; no suplantar autores.
 
 ## Ramas y pruebas
-Usar feature/descripcion/python, feature/descripcion/javafx,
-feature/descripcion/android o feature/descripcion/unity. El ultimo segmento
-selecciona las pruebas LOCALES. Sufijos desconocidos y HEAD separado bloqueados.
-Commit en main/develop y push directo hacia ellas bloqueados, incluso con
-refspec desde otra rama. Integrar mediante PR.
+Toda rama de trabajo debe terminar en la palabra python, por ejemplo
+chore/infra/python o feature/descripcion/python. main y develop siguen siendo
+las ramas comunes protegidas y no ejecutan gates.
+El resto de ramas se ignora: pre-commit, pre-push, el workflow de GitHub y act
+no ejecutan nada en ellas (los hooks lo avisan y terminan sin error), aunque el
+push hacia main/develop sigue bloqueado.
+En una rama python, pre-commit y pre-push ejecutan uv --locked, formato, lint,
+pruebas y cobertura propia >=80%:
 ```
-python scripts/quality.py test --platform python
-python scripts/quality.py test --platform javafx
-python scripts/quality.py test --platform android
-python scripts/quality.py test --platform unity
+py -3 scripts/quality.py test --platform python
 ```
-pre-commit y pre-push ejecutan pruebas y cobertura propia >=80%. Python tambien
-formato y lint. Faltan proyectos o tests: fallo, nunca verde ficticio.
-JavaFX/Android: Gradle Wrapper real, JUnit y JaCoCo XML. Leer README de plataforma.
-Unity: instalar Unity 6.3, Test Framework y Code Coverage; UNITY_EDITOR debe ser
-la ruta del editor. Configurar filtros de assemblies propios y tests separados.
+Commit en main/develop y push directo hacia ellas quedan bloqueados, incluso
+con refspec desde otra rama; solo se envia la rama actual, sin tags ni borrados.
+Integrar mediante PR.
 
-CI GitHub ejecuta SOLO Python en todo push y PR, conforme contrato 3.5/6.3.
-Genera JUnit, cobertura XML y HTML. La cobertura de la calculadora de ejemplo
-no acredita requisitos criptograficos. act: con Docker, `act push -j python-quality`.
-No se ha ejecutado act ni GitHub hasta disponer de Docker/remoto.
+## CI y act (solo Python)
+.github/workflows/ci.yml se dispara con push a ramas acabadas en python y con
+PR hacia main/develop desde esas mismas ramas; en cualquier otra rama el job se
+omite. Genera JUnit, cobertura XML y HTML en .artifacts/python.
+.actrc fija el job python-quality, asi que `act push` ejecuta solo Python.
+`act push` verificado el 2026-11-05 con Docker Desktop: un unico job,
+Job succeeded y artefacto python-informes en .artifacts/act/1.
+GitHub sigue pendiente: no hay remoto conectado.
 
 ## Proteccion en GitHub (pendiente de vincular remoto)
 Crear ruleset para main y develop: impedir borrados y force-push, exigir PR,
@@ -47,9 +64,7 @@ No se han creado commits: cada integrante debe producir cambios reales con
 su identidad. Tras revisar, hacer el primer commit desde chore/infra/python;
 crear main/develop desde ese commit y trabajar por PR. Ver docs/REQUISITOS.md.
 
-Pruebas de la infraestructura (independientes de cobertura de aplicaciones):
-`py -3 scripts/test_quality.py`. Plantillas JaCoCo: archivos *.gradle.example;
-adaptarlos al importar proyectos reales, sin crear compilaciones ficticias.
+Pruebas de la infraestructura (independientes de la cobertura de la aplicacion):
+`py -3 scripts/test_quality.py`.
 
-Guia: [CI/CD y hooks](docs/GUIA_CI_CD.md), [lectura HTML](docs/GUIA_CI_CD.html).
-Javadoc: [autoria y generacion](javafx/JAVADOC.md).
+Guia: [CI/CD y hooks](docs/GUIA_CI_CD.md). Validacion: [infraestructura](docs/VALIDACION_INFRA.md).

@@ -1,7 +1,11 @@
 name: CI Python
 on:
   push:
+    # Solo se valida trabajo de ramas que acaban en la palabra python.
+    branches: ['**python']
   pull_request:
+    # Las ramas de destino son main/develop; el filtro del job exige origen python.
+    branches: [main, develop, '**python']
   workflow_dispatch:
 permissions:
   contents: read
@@ -11,6 +15,8 @@ concurrency:
 jobs:
   python-quality:
     name: Python - lint, tests y cobertura >=80%
+    # El resto de ramas se ignora: no ejecuta ni lint ni pruebas.
+    if: endsWith(github.event_name == 'pull_request' && github.head_ref || github.ref_name, 'python')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

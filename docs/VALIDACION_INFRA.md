@@ -13,7 +13,7 @@ La calculadora es solo el ejemplo docente: NO valida AES ni requisitos funcional
 JavaFX, Android y Unity no tienen proyectos implementados todavia; por ello sus
 gates no se presentan como superados. Se incluyen contratos de tareas y
 plantillas JaCoCo; hace falta importar cada proyecto real.
-GitHub y act no ejecutados: no hay remoto conectado ni validacion Docker.
+GitHub y act no ejecutados en esa fecha (historico; ver seccion 2026-11-05).
 No se han creado commits, PR, main/develop con contenido ni evidencias de
 participacion ficticias. HEAD inicial: chore/infra/python.
 ## Correccion CI en Docker (act) - 2026-10-31
@@ -24,3 +24,38 @@ act push -j python-quality --pull=false: Job succeeded, exit 0.
 Formato, lint, tests/cobertura e informes superados dentro de Docker Linux.
 .actrc habilita servidor local de artefactos en .artifacts/act.
 Este resultado valida la infraestructura de ejemplo, no la implementacion AES.
+
+## Alcance reducido a Python - 2026-11-05
+Los registros anteriores describen el estado previo, cuando los hooks elegian
+plataforma por el sufijo de la rama y CI se disparaba en cualquier push. Desde
+esta fecha, CI/CD, act, pre-commit y pre-push solo levantan Python:
+- Las ramas deben acabar en el segmento python. El resto se ignora: los hooks
+  avisan y terminan sin ejecutar suites, y el workflow no se dispara (o su job
+  se omite si el evento ya estaba definido).
+- Siguen bloqueados el commit directo en main/develop y el push hacia ellas,
+  incluso por refspec; el push solo admite la rama actual.
+- JavaFX, Android y Unity se retiraron de los gates porque sus toolchains
+  (Gradle/AGP, emuladores, Unity batchmode) nos estaban dando demasiados
+  problemas y bloqueaban commits sin aportar senal util. Sus README ya no
+  describen como ejecutarlos.
+- .actrc fija `-j python-quality`, asi que `act push` ejecuta solo ese job.
+- Regresiones de scripts/test_quality.py: 12 tests OK con
+  `py -3 scripts/test_quality.py`.
+
+## act verificado con Docker - 2026-11-05
+Docker Desktop 29.6.2 (motor Linux) e imagen catthehacker/ubuntu:act-latest.
+- `act -l`: un unico job, python-quality, para push/pull_request/workflow_dispatch.
+- `act push`: Job succeeded, exit 0, un solo job ejecutado (el filtro -j de
+  .actrc y el if de rama funcionan). 4 tests en la primera pasada.
+- Dentro del contenedor: ruff format --check y ruff check OK, cobertura 100%,
+  informes publicados como artefacto python-informes (.artifacts/act/1/).
+- Segunda pasada con codigo y tests nuevos (cifrado Vigenere P-01): gate local
+  17 tests passed, cobertura 100% y `act push` de nuevo Job succeeded, exit 0,
+  con 17 tests dentro del contenedor.
+- Hooks reales: pre-commit y pre-push exit 0 en rama chore/infra/python;
+  en una rama feature/prueba/javafx ambos exit 0 sin ejecutar suite (rama
+  ignorada) y el push a main desde ella sigue bloqueado (exit 1).
+- Commit en main/develop (exit 1), push a refs/heads/main (exit 1) y push de
+  otra ref (exit 1) verificados en local.
+GitHub no se ha ejecutado: no hay remoto conectado. Esta validacion cubre la
+infraestructura, no los requisitos funcionales del producto.
