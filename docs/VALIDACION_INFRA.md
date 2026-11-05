@@ -98,15 +98,17 @@ Con una sola cuenta hace falta otra persona para aprobar el PR de integracion:
 el ruleset exige revision ajena.
 
 ## Primer pull request con el check obligatorio - 2026-11-05
-PR #1: chore/infra/python -> develop, head de3dd20, 2 commits por delante.
-- El evento pull_request disparo el workflow (base develop y head acabado en
-  python cumplen los filtros): run 42112520421, conclusion success, un solo job
-  "Python - lint, tests y cobertura >=80%" con sus 8 pasos en verde y artefacto
-  python-informes-42112520421 de 31.948 bytes.
+PR #1: chore/infra/python -> develop, 3 commits por delante. El workflow se
+ejecuto dos veces porque la documentacion se publico con el PR ya abierto.
+- Evento pull_request (base develop y head acabado en python cumplen los
+  filtros): run 42112520421 sobre de3dd20 y run 42112678397 sobre f31e59f,
+  ambos conclusion success, un solo job "Python - lint, tests y cobertura >=80%"
+  con sus 8 pasos en verde y artefacto python-informes-42112678397 (31.955
+  bytes).
 - El check-run sobre el head lleva ese nombre exacto, que es el contexto exigido
-  por el ruleset 26649432, y GitHub lo marca como obligatorio en el PR.
-- mergeable_state = blocked: el servidor no deja fusionar sin una aprobacion
-  ajena aunque el check este en verde. El PR queda abierto a la espera de
-  revision; el autor no puede aprobar su propio PR.
-- Consecuencia practica: hace falta invitar a otro colaborador para integrar
-  cambios en develop y despues en main.
+  por el ruleset 26649432.
+- mergeable_state = blocked con el check en verde y reviews vacias: el servidor
+  no deja fusionar sin una aprobacion ajena, y el autor no puede aprobar su
+  propio PR. El PR queda abierto a la espera de revision.
+- Consecuencia practica: hace falta invitar a otro colaborador para integrar en
+  develop y despues en main.
