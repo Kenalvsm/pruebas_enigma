@@ -8,6 +8,11 @@ def restar(a: int, b: int) -> int:
     return a - b
 
 
+def multiplicar(a: int, b: int) -> int:
+    """Devuelve el producto de dos enteros."""
+    return a * b
+
+
 def dividir(a: float, b: float) -> float:
     """Devuelve la division de dos numeros."""
     if b == 0:
